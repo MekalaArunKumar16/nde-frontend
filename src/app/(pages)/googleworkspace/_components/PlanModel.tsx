@@ -210,19 +210,18 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
-            <div className="relative w-[80vw] rounded-lg border border-black shadow-lg mb-8 bg-background-Gsuite-banner">
-
-                <div className="p-4 relative">
+            <div className="relative w-[80vw] max-xl:w-[92vw] rounded-lg border border-black shadow-lg mb-8 bg-background-Gsuite-banner">
+                <div className="p-4 max-lg:p-1 relative">
                     {currentStep === 0 && currentProduct && (
                         <div>
-                            <div className="flex justify-between items-center py-10 mx-4 md:mx-10">
-                                <div className='flex flex-col gap-1'>
-                                    <span className='font-roboto font-900 text-4xl text-home-heading'>Plan Name</span>
-                                    <span className='text-3xl font-400 font-roboto-serif'>{currentProduct.name}</span>
+                            <div className="flex max-md:flex-col justify-between items-center max-md:text-center py-10 mx-4 md:mx-10">
+                                <div className='flex flex-col gap-1 max-md:text-center'>
+                                    <span className='font-roboto font-900 text-4xl max-xl:text-2xl text-home-heading'>Plan Name</span>
+                                    <span className='text-3xl max-xl:text-xl font-400 font-roboto-serif'>{currentProduct.name}</span>
                                 </div>
-                                <div className='flex items-center justify-center gap-10'>
+                                <div className='flex max-md:flex-col items-center justify-center max-md:pt-4 max-md:gap-4 gap-10'>
                                     <div className='flex flex-col gap-3'>
-                                        <span className='text-4xl font-roboto font-900 text-home-heading'>Duration</span>
+                                        <span className='text-4xl max-md:text-xl font-roboto font-900 text-home-heading'>Duration</span>
                                         <select
                                             name="duration"
                                             id="duration"
@@ -238,11 +237,11 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                         </select>
                                     </div>
                                     <div className='flex flex-col gap-1'>
-                                        <span className='font-roboto font-900 text-4xl text-home-heading'>Total</span>
-                                        <span className='text-4xl font-400 font-roboto-serif'>₹{price}/-</span>
+                                        <span className='font-roboto font-900 text-4xl max-md:text-xl text-home-heading'>Total</span>
+                                        <span className='text-4xl font-400 max-md:text-xl font-roboto-serif'>₹{price}/-</span>
                                     </div>
                                     <button
-                                        className='bg-home-primary text-3xl font-900 text-white py-4 px-4 rounded-2xl'
+                                        className='bg-home-primary text-3xl max-md:text-xl font-900 text-white py-4 px-4 rounded-2xl'
                                         onClick={handleNextStep}
                                     >
                                         Buy Now
@@ -252,27 +251,27 @@ const PlanModal: React.FC<PlanModalProps> = ({
                         </div>
                     )}
                     {currentStep === 1 && (
-                        <div className='flex flex-col items-start px-10'>
-                            <div className='flex items-center gap-16 mx-3'>
-                                <div className='flex items-center gap-4'>
+                        <div className='flex flex-col items-start px-10 max-md:px-0'>
+                            <div className='flex items-center  max-md:justify-center max-md:items-start gap-16 max-md:gap-0  mx-3 max-md:mx-0 '>
+                                <div className='flex items-center gap-4 max-md:gap-1'>
                                     <input
                                         type="radio"
                                         name="domainOption"
                                         id="newDomain"
                                         onChange={() => setShowInputForm(true)}
                                     />
-                                    <span className=' font-roboto-serif text-3xl'>
+                                    <span className=' font-roboto-serif text-3xl max-md:text-xs '>
                                         Register a New Domain
                                     </span>
                                 </div>
-                                <div className='flex items-center gap-4'>
+                                <div className='flex items-center gap-4 max-md:gap-1'>
                                     <input
                                         type="radio"
                                         name="domainOption"
                                         id="existingDomain"
                                         onChange={() => setShowInputForm(false)}
                                     />
-                                    <span className=' font-roboto-serif text-3xl '>
+                                    <span className=' font-roboto-serif text-3xl max-md:text-xs '>
                                         I already have a Domain Name
                                     </span>
                                 </div>
@@ -282,14 +281,14 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                     <div>
                                         <div className="flex m-3 rounded-xl">
                                             <input
-                                                className="w-[60vw] p-6 border rounded-l-xl max-md:placeholder:text-[10px]"
+                                                className="w-[60vw] max-md:w-[50vw] max-md:text-md max-md:p-2 p-6 border rounded-l-xl max-md:placeholder:text-[10px]"
                                                 placeholder="Find and purchase a domain name"
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 autoFocus
                                             />
                                             <button
-                                                className={`bg-home-primary text-white text-xl font-roboto font-700 px-6 p-2 rounded-r-xl ${isFetching ? "cursor-wait" : ""
+                                                className={`bg-home-primary text-white text-xl max-md:text-[10px] max-md:px-1 max-md:p-0 font-roboto font-700 px-6 p-2 rounded-r-xl ${isFetching ? "cursor-wait" : ""
                                                     }`}
                                                 onClick={async () => {
                                                     await refetch();
@@ -326,7 +325,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
                 </div>
                 <button
                     onClick={() => setIsModalOpen(false)}
-                    className="absolute top-[-15px] right-[-12px] w-[40px] h-[40px] text-2xl bg-gray-300 rounded-full font-900"
+                    className="absolute top-[-15px] right-[-12px] w-[40px] h-[40px] max-md:text-lg max-md:w-[30px] max-md:h-[30px] text-2xl bg-gray-300 rounded-full font-900"
                 >
                     <span>✖</span>
                 </button>

@@ -12,6 +12,8 @@ import Login from "./Login";
 import SignUpUser from "./SignUp";
 import { logout } from "@/store/authSlice";
 import { setIsSidebarOpen } from "@/store/sidebarSlice";
+import { toast } from "sonner";
+import HambugerDropdown from "./HambugerDropdown";
 
 interface NavbarProps {
   navbarBg: string;
@@ -19,10 +21,11 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
-  const [activeModal, setActiveModal] = useState<"login" | "signup" | null>(
+  const [isHambugerDropdownOpen, setIsHambugerDropdownOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState < "login" | "signup" | null > (
     null
   );
-  const [fullName, setFullName] = useState<string>("User");
+  const [fullName, setFullName] = useState < string > ("User");
   const [mounted, setMounted] = useState(false); // Track if component has mounted
 
   const dispatch = useDispatch();
@@ -66,16 +69,20 @@ const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
     window.location.reload();
   };
 
+  const handleHamburgerClick = () => {
+    setIsHambugerDropdownOpen(!isHambugerDropdownOpen)
+  };
+
   // If not mounted, render the server-side HTML without client-specific parts
   if (!mounted) {
     return (
       <div
         className={`z-50 fixed w-full top-0 left-0 right-0 transition-colors duration-500 ${navbarBg}`}
       >
-        <nav className="relative items-center justify-between h-[60px] xl:h-[55px]">
+        <nav className="relative items-center justify-between h-[30px] xl:h-[55px]">
           <div className="flex items-center h-full w-full">
             <div className="bg-white bg-opacity-50 w-[112px] max-2xl:w-[53px] max-md:w-[38px] h-full rounded-br-2xl"></div>
-            <Link href="/" className="px-3 h-full">
+            <Link href="/" className="px-3 max-md:px-0 h-full">
               <Image
                 src={ICONS.logo}
                 alt="logo"
@@ -135,6 +142,7 @@ const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
                     src={ICONS.menu}
                     alt="menu"
                     className="w-[25px] lg:hidden"
+                    onClick={handleHamburgerClick}
                   />
                 </div>
               </div>
@@ -219,7 +227,7 @@ const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
                 <Image
                   src={ICONS.chart}
                   alt="Chart Icon"
-                  className="block w-[25px] cursor-pointer"
+                  className="block w-[25px] max-md:w-[20px] cursor-pointer"
                   onClick={() => {
                     dispatch(setIsSidebarOpen(!isSidebarOpen));
                   }}
@@ -232,7 +240,8 @@ const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
                 <Image
                   src={ICONS.menu}
                   alt="menu"
-                  className="w-[25px] lg:hidden"
+                  className="w-[20px] lg:hidden"
+                  onClick={handleHamburgerClick}
                 />
               </div>
             </div>
@@ -251,6 +260,11 @@ const Navbar: React.FC<NavbarProps> = ({ navbarBg }) => {
           onClose={() => setActiveModal(null)}
           isOpen={activeModal === "signup"}
         />
+      )}
+      {isHambugerDropdownOpen && (
+        <div className=" z-50 ">
+          <HambugerDropdown onClose={handleHamburgerClick} isOpen={isHambugerDropdownOpen}/>
+        </div>
       )}
     </div>
   );

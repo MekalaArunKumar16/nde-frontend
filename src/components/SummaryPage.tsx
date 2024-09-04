@@ -155,7 +155,7 @@ const SummaryPage = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                         <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
                             <tr>
-                                <td className="text-sm text-gray-800 px-10">
+                                <td className="text-sm text-gray-800 px-10 max-md:px-2">
                                     <ul className='bg-white text-left'>
                                         <li className=''></li>
                                         <li className='py-1 font-900 text-xl'>Subtotal</li>

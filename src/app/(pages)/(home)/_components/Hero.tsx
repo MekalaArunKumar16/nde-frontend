@@ -15,7 +15,7 @@ const Hero = () => {
         />
       </div>
       <div className="relative z-10 pt-[160px] max-lg:pt-[100px] mx-4 md:mx-10">
-        <div className="flex flex-col lg:flex-row justify-between items-center ml-[82px] mr-[4vw] gap-10 max-2xl:gap-10 max-xl:mr-0 max-2xl:ml-6 max-2xl:mr-0">
+        <div className="flex flex-col lg:flex-row justify-between items-center ml-[82px] mr-[4vw] gap-10 max-2xl:gap-10 max-xl:mr-0 max-2xl:ml-6 max-2xl:mr-0 max-md:ml-0">
           <div className="flex flex-col gap-5 max-md:gap-4 items-center lg:items-start text-center lg:text-left">
             {/* Heading */}
             <h1 className="text-[60px] leading-[65.5px] tracking-tighter  max-md:text-2xl max-2xl:leading-[52.5px] max-2xl:text-[48px] max-xl:text-[38px] font-roboto  text-home-heading font-800">

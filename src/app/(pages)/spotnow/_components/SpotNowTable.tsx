@@ -84,7 +84,7 @@ const SpotNowTable: React.FC = () => {
                     <table className="w-full min-w-max">
                         <thead>
                             <tr>
-                                <th className="sticky left-0 bg-white shadow-r-xl text-home-heading text-5xl font-roboto font-900 tracking-tighter text-center">
+                                <th className="sticky left-0 bg-white z-50  shadow-r-xl text-home-heading text-5xl max-lg:text-2xl max-md:text-xl font-roboto font-900 tracking-tighter text-center">
                                     Spot Now Features
                                 </th>
                                 <PlanCard name="Starter" price={isAnnually ? "670" : "67"} isStarter={true} />

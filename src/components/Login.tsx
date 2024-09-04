@@ -54,6 +54,7 @@ const Login: React.FC<LoginProps> = ({ onClose, isOpen }) => {
             toast.success('Login successful');
             setIsLoggedIn(true);
             onClose(); // Optionally close the login modal
+            window.location.reload();
         },
         onError: (error: Error) => {
             dispatch(loginFailure(error.message));

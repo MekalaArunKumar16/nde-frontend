@@ -65,6 +65,8 @@ import market from "@/assets/icons/Group 70463.svg"
 import newGoogle from "@/assets/icons/Vector (2).svg"
 import Meta from "@/assets/icons/icons8-meta 1.svg"
 import MailNow from "@/assets/icons/Send Email Without Attachment - iconSvg.co.svg"
+import dropdown from "@/assets/icons/grommet-icons_down.svg"
+
 
 
 
@@ -172,6 +174,7 @@ import tracking2 from "@/assets/images/Rectangle 46647 (2).svg"
 
 
   const ICONS = {
+    dropdown,
     logo,
     chart,
     drop,

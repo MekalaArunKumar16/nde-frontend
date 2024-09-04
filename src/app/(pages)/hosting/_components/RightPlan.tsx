@@ -85,7 +85,7 @@ const RightPlan: React.FC = () => {
 
     const PlanFeature: React.FC<PlanFeatureProps> = ({ title, starter, advanced, premium }) => (
         <tr className="border-t-[1px] border-black border-opacity-65 font-roboto-serif">
-            <td className="sticky left-0 bg-white text-home-heading tracking-tighter text-md px-1 lg:text-2xl text-start pl-4 lg:pl-10 font-400 py-2 lg:py-4">
+            <td className="sticky left-0 bg-white text-home-heading tracking-tighter text-xs px-1 lg:text-2xl text-start pl-4 lg:pl-10 font-400 py-2 lg:py-4">
                 {title}
             </td>
             <td className="text-home-heading text-center bg-[#D7F2FF] py-2 lg:py-4 text-lg lg:text-2xl">{starter}</td>
@@ -124,7 +124,7 @@ const RightPlan: React.FC = () => {
                     <table className="w-full min-w-max">
                         <thead>
                             <tr>
-                                <th className="sticky left-0 bg-white shadow-r-xl text-home-heading text-xl lg:text-5xl font-roboto font-900 tracking-tighter text-center py-4 lg:py-8">
+                                <th className="sticky left-0 bg-white shadow-r-xl text-home-heading text-lg lg:text-5xl font-roboto font-900 tracking-tighter z-50 text-center py-4 lg:py-8">
                                     Plan Features
                                 </th>
                                 <PlanCard name="Starter" price="67" isStarter={true} onAddToCart={() => handleAddToCart("Starter")} showDropdown={activeDropdown === "Starter"} />
