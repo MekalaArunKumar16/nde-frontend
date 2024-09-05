@@ -53,7 +53,7 @@ const SpotNowTable: React.FC = () => {
 
     return (
         <div className='bg-[#F3F4FD] py-24'>
-            <div className='flex justify-center text-center'>
+            {/* <div className='flex justify-center text-center'>
                 <span
                     className={`cursor-pointer px-4 ${!isAnnually ? 'font-bold' : ''}`}
                     onClick={() => setIsAnnually(false)}
@@ -75,7 +75,7 @@ const SpotNowTable: React.FC = () => {
                 >
                     Annually
                 </span>
-            </div>
+            </div> */}
             <div className='flex justify-center text-center pt-10'>
                 <span className='font-roboto-serif font-500 text-2xl'>Choose the Spot Now’s edition that best fits your business.</span>
             </div>

@@ -94,9 +94,9 @@ const RightPlan: React.FC = () => {
     const PlanFeature: React.FC<PlanFeatureProps> = ({ title, starterIcon, advancedIcon, premiumIcon, iconSrc }) => (
         <tr className='border-t-[1px] border-black font-roboto-serif'>
             <td className='text-home-heading text-lg lg:text-2xl text-start pl-4 font-400 py-2 lg:py-4'>
-                <div className='flex gap-10 px-4'>
+                <div className='flex gap-10 max-md:gap-3 px-4 max-md:px-1'>
                     <Image src={iconSrc} alt={title} className='' />
-                    <span className=''>{title}</span> {/* Use the new image prop */}
+                    <span className=' max-md:text-xs'>{title}</span> {/* Use the new image prop */}
                 </div>
             </td>
             <td className='text-home-heading text-center bg-[#D7F2FF] py-2 lg:py-4 text-lg lg:text-2xl'>
@@ -142,12 +142,12 @@ const RightPlan: React.FC = () => {
                     Choose a Right Plan for Your Website
                 </span>
             </div>
-            <div className="px-0 lg:px-16 pb-10">
-                <div className="bg-white mx-0 lg:mx-14 overflow-x-auto">
+            <div className="px-0 lg:px-10 pb-10">
+                <div className="bg-white mx-0  overflow-x-auto">
                     <table className="w-full min-w-max">
                         <thead>
                             <tr>
-                                <th className="sticky left-0 w-[600px] bg-white shadow-r-xl text-home-heading text-xl lg:text-5xl font-roboto font-900 tracking-tighter text-center py-4 lg:py-8">
+                                <th className=" left-0 w-[600px] max-xl:w-[400px] max-md:w-[200px] bg-white shadow-r-xl text-home-heading text-xl lg:text-5xl font-roboto font-900 tracking-tighter text-center py-4 lg:py-8">
                                     Plan Features
                                 </th>
                                 <PlanCard name="Starter" price="67" isStarter={true} onAddToCart={() => handleAddToCart("Starter")} showDropdown={activeDropdown === "Starter"} />

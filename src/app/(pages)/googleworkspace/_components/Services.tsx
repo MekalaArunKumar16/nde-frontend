@@ -49,18 +49,18 @@ const Services = () => {
                 />
             </div>
             <div className='flex justify-center text-center'>
-                    <span className='text-7xl max-2xl:text-5xl max-xl:text-4xl max-lg:text-4xl max-md:text-xl  font-900 font-roboto text-home-heading relative'>Services We Provide For You</span>
+                    <span className='text-7xl max-2xl:text-5xl max-xl:text-4xl max-lg:text-4xl max-md:text-3xl  font-900 font-roboto text-home-heading relative'>Services We Provide For You</span>
                 </div>
             <div className='flex flex-wrap justify-center py-16 gap-10'>
                 {servicesData.map((service, index) => (
                     <div
                         key={index}
-                        className='group flex flex-col p-4 bg-white items-start gap-6 w-[27vw] max-lg:w-[45vw] max-md:w-[95vw] relative rounded-xl duration-700 transition-transform hover:bg-background-Gsuite'
+                        className='group flex flex-col p-4 bg-white items-start gap-6 w-[27vw] max-lg:w-[45vw] max-md:w-[90vw] relative rounded-xl duration-700 transition-transform hover:bg-background-Gsuite'
                     >
-                        <span className='text-home-primary text-4xl max-md:text-3xl font-900 font-roboto group-hover:text-white'>
+                        <span className='text-home-primary text-4xl max-md:text-2xl font-900 font-roboto group-hover:text-white'>
                             {service.title}
                         </span>
-                        <span className='font-roboto-serif text-3xl pb-10 max-md:text-xl group-hover:text-white'>
+                        <span className='font-roboto-serif text-3xl pb-10 max-md:text-lg group-hover:text-white'>
                             {service.description}
                         </span>
                         <Image src={service.icon} alt='icon' className='absolute bottom-0 right-0 rounded-xl group-hover:opacity-50' />

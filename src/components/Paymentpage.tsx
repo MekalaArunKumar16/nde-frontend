@@ -120,7 +120,7 @@ const PaymentPage = () => {
                                                     <a href={product.link} className="text-blue-500 text-sm">{product.link}</a>
                                                 </div>
                                             </td>
-                                            <td className="text-sm text-gray-800">
+                                            <td className="text-sm text-gray-800 max-md:hidden">
                                                 {product.domainName ? (
                                                     <div>
                                                         {product.period && <p>{product.period}</p>}

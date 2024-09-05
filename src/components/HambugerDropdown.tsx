@@ -27,7 +27,7 @@ const DropdownLink: React.FC<DropdownLinkProps> = ({ href, icon, label }) => (
                 className="bg-gradient-light w-[40px] h-[40px] max-2xl:w-[50px] max-xl:w-[40px] max-2xl:h-[50px] max-xl:h-[40px] rounded-lg p-2"
             />
             <div className="flex flex-col font-roboto">
-                <span className="font-semibold text-lg max-2xl:text-lg max-xl:text-sm">{label}</span>
+                <span className="font-400 opacity-70 text-lg max-2xl:text-lg max-xl:text-sm">{label}</span>
             </div>
         </div>
     </Link>
