@@ -21,8 +21,15 @@ interface Domain {
     tld: string;
     year: number;
     registerPrice: number;
-    _id: string;
+    _id: string;  
   }[];
+}
+interface CartItem extends Domain {
+  product: string;
+  productId: string;
+  domainName: string;
+  type: string;
+  year: number;
 }
 
 
@@ -52,9 +59,8 @@ const Hero = () => {
   const { isSidebarOpen } = useSelector((state: any) => state.sidebar);
   const { isAuthenticated } = useSelector((state: any) => state.auth);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [cart, setCart] = useState<Domain[]>(() => {
+  const [cart, setCart] = useState<CartItem[]>(() => {
     if (typeof window !== "undefined") {
-      // Check if we're in the browser environment
       const savedCart = localStorage.getItem("cart");
       console.log("Cart loaded from local storage:", savedCart);
       return savedCart ? JSON.parse(savedCart) : [];
@@ -120,20 +126,24 @@ const Hero = () => {
       const data = queryClient.getQueryData<any>(["cart"]);
       const formattedData = domain.price?.map((price) => ({
         product: "domain",
-        productId: price._id,
+        productId: price.productId,
         domainName: domain.name,
         type: "new", // Assuming the type is "new", adjust if necessary
         year: price.year,
       }));
+  
       mutate(formattedData);
     } else {
       setCart((prevCart) => {
-        // Merge cart items and ensure they still match the Domain type
-        const newCart = [
+        const newCart: CartItem[] = [
           ...prevCart,
           ...domain.price?.map((price) => ({
-            ...domain, // Spread the original domain object to keep its structure
-            productId: price._id,
+            name: domain.name,
+            status: domain.status,
+            product: "domain",
+            productId: price.productId,
+            domainName: domain.name,
+            type: "new",
             year: price.year,
           })) || [],
         ];
@@ -143,6 +153,7 @@ const Hero = () => {
         console.log("Cart updated with new items:", newCart);
         return newCart;
       });
+  
       queryClient.setQueryData<Domain[]>(
         ["domainAvailability", searchQuery],
         (oldDomains = []) =>
@@ -152,6 +163,8 @@ const Hero = () => {
       );
     }
   };
+  
+  
   
   
   const handleRemoveFromCart = (domain: Domain) => {

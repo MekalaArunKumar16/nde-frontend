@@ -119,12 +119,12 @@ const RightPlan: React.FC = () => {
                     Choose a Right Plan for Your Website
                 </span>
             </div>
-            <div className="px-0 lg:px-16 pb-10">
+            <div className="px-4  pb-10">
                 <div className="bg-white mx-0 lg:mx-14 overflow-x-auto">
                     <table className="w-full min-w-max">
                         <thead>
                             <tr>
-                                <th className="sticky left-0 bg-white shadow-r-xl text-home-heading text-lg lg:text-5xl font-roboto font-900 tracking-tighter z-50 text-center py-4 lg:py-8">
+                                <th className="sticky left-0 bg-white shadow-r-xl text-home-heading text-lg lg:text-5xl font-roboto font-900 tracking-tighter z-20 text-center py-4 lg:py-8">
                                     Plan Features
                                 </th>
                                 <PlanCard name="Starter" price="67" isStarter={true} onAddToCart={() => handleAddToCart("Starter")} showDropdown={activeDropdown === "Starter"} />

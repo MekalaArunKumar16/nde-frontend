@@ -2,6 +2,9 @@ import Image, { StaticImageData } from 'next/image';
 import { CART } from '@/assets';
 import { useState, useEffect } from 'react';
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
+import { useSelector } from 'react-redux';
+import axios from '@/services/axios';
+import { useQuery } from '@tanstack/react-query';
 
 interface CartItem {
     product: string;
@@ -35,43 +38,85 @@ const PaymentPage = () => {
     const [tax, setTax] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
 
+    const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+    const token = useSelector((state: any) => state.auth.token);
+
+    const fetchCartFromAPI = async () => {
+        const response = await axios.get('https://liveserver.nowdigitaleasy.com:5000/cart');
+        return response.data;
+    };
+
+    const { data: apiCartData, isLoading: apiLoading } = useQuery({
+        queryKey: ['cartData'],
+        queryFn: fetchCartFromAPI,
+        enabled: isAuthenticated,
+    });
 
     useEffect(() => {
         const fetchCartItems = () => {
             try {
-                const savedCart = localStorage.getItem('cart');
-                const cartItems: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
+                if (!isAuthenticated) {
+                    const savedCart = localStorage.getItem('cart');
+                    const cartItems: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
 
-                const formattedProducts: Product[] = cartItems.map((item) => {
-                    if (item.product === "Hosting") {
-                        return {
-                            name: "Hosting",
-                            link: item.domainName || "Unknown Hosting",
-                            img: CART.database, // Use the appropriate image
-                            price: `₹ ${item.price}/-`, // Set Gsuite-specific price logic
-                            domainName: item.domainName,
-                            period: item.period,
-                        };
-                    } else if (item.product === "Gsuite") {
-                        return {
-                            name: "Gsuite",
-                            link: item.domainName || "Unknown Gsuite Product",
-                            img: CART.google, // Use the appropriate image
-                            price: `₹ ${item.price}/-`, // Set Gsuite-specific price logic
-                            domainName: item.domainName,
-                            period: item.period,
-                        };
-                    } else {
-                        return {
-                            name: "Domain",
-                            link: item.name || "Unknown Product",
-                            img: CART.www, // Use the appropriate image
-                            price: item.price ? `₹${item.price[0].registerPrice}` : "N/A",
-                        };
-                    }
-                });
+                    const formattedProducts: Product[] = cartItems.map((item) => {
+                        if (item.product === "Hosting") {
+                            return {
+                                name: "Hosting",
+                                link: item.domainName || "Unknown Hosting",
+                                img: CART.database, 
+                                price: `₹ ${item.price}/-`, 
+                                domainName: item.domainName,
+                                period: item.period,
+                            };
+                        } else if (item.product === "Gsuite") {
+                            return {
+                                name: "Gsuite",
+                                link: item.domainName || "Unknown Gsuite Product",
+                                img: CART.google, 
+                                price: `₹ ${item.price}/-`, 
+                                domainName: item.domainName,
+                                period: item.period,
+                            };
+                        } else {
+                            return {
+                                name: "Domain",
+                                link: item.name || "Unknown Product",
+                                img: CART.www, 
+                                price: item.price ? `₹${item.price[0].registerPrice}` : "N/A",
+                            };
+                        }
+                    });
 
-                setProducts(formattedProducts);
+                    setProducts(formattedProducts);
+                } else if (apiCartData) {
+                    const formattedProducts: Product[] = apiCartData.products.map((item: any) => {
+                        let productImage = CART.www; // Default image for domains
+                        if (item.product.toLowerCase() === 'hosting') {
+                            productImage = CART.database;
+                        } else if (item.product.toLowerCase() === 'gsuite') {
+                            productImage = CART.google;
+                        }
+
+                        return {
+                            name: item.product || 'Unknown Product',
+                            link: item.domainName || 'Unknown Product',
+                            img: productImage,
+                            price: `₹ ${item.pleskPrice || item.gsuitePrice || 0}/-`,
+                            domainName: item.domainName,
+                            period: item.period || `${item.year} Year` || 'Unknown Period',
+                        };
+                    });
+
+                    setProducts(formattedProducts);
+
+                    // Calculate subtotal, tax, and total
+                    setSubtotal(apiCartData.subTotal || 0);
+                    const cgstAmt = apiCartData.gst.cgst.Amt || 0;
+                    const sgstAmt = apiCartData.gst.sgst.Amt || 0;
+                    setTax(cgstAmt + sgstAmt);
+                    setTotal(apiCartData.Total || 0);
+                }
             } catch (error) {
                 console.error('Error fetching cart items:', error);
             } finally {
@@ -80,26 +125,9 @@ const PaymentPage = () => {
         };
 
         fetchCartItems();
-    }, []);
+    }, [isAuthenticated, apiCartData]);
 
-    // Calculate subtotal, tax, and total based on the products
-    useEffect(() => {
-        if (products.length > 0) {
-            const calculatedSubtotal = products.reduce((acc, product) => {
-                const price = parseFloat(product.price.replace(/[₹,]/g, ''));
-                return acc + (isNaN(price) ? 0 : price);
-            }, 0);
-
-            const calculatedTax = calculatedSubtotal * 0.05; // Assuming 5% tax
-            const calculatedTotal = calculatedSubtotal + calculatedTax;
-
-            setSubtotal(calculatedSubtotal);
-            setTax(calculatedTax);
-            setTotal(calculatedTotal);
-        }
-    }, [products]);
-
-    if (loading) {
+    if (loading || apiLoading) {
         return <div className="text-center">Loading...</div>;
     }
 
@@ -161,25 +189,25 @@ const PaymentPage = () => {
                             </ul>
                         </td>
                         <td className="flex items-center px-4 py-4 text-sm text-blue-800"></td>
-                        <td className="text-sm text-gray-800">
-                            <ul className='bg-white text-center'>
-                                <li className=''></li>
-                                <li className='py-1'>₹ {subtotal.toFixed(2)}</li>
-                                <li className='py-1'>₹ {tax.toFixed(2)}</li>
-                            </ul>
+                        <td className="px-4 py-4 text-sm text-gray-800">
+                            <div className=''>
+                                <p className='py-1'>₹ {subtotal}</p>
+                                <p className='py-1'>₹ {tax}</p>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td className="flex items-center px-4 py-4 text-sm text-blue-800"></td>
-                        <td className="text-sm text-gray-800">
-                            <ul className='bg-white text-center'>
-                                <li className='py-1 font-bold'>Total</li>
+                        <td className="text-sm text-gray-800 px-2">
+                            <ul className='bg-white text-left'>
+                                <li className=''></li>
+                                <li className='text-md'>Total</li>
                             </ul>
                         </td>
-                        <td className="text-sm text-gray-800">
-                            <ul className='bg-white text-center'>
-                                <li className='py-1 font-bold'>₹ {total.toFixed(2)}</li>
-                            </ul>
+                        <td className="flex items-center px-4 py-4 text-sm text-blue-800"></td>
+                        <td className="px-4 py-4 text-sm text-gray-800">
+                            <div className=''>
+                                <p className='py-1'>₹ {total}</p>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
