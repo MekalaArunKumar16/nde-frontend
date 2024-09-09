@@ -118,7 +118,6 @@ const Hero = () => {
   const handleAddToCart = (domain: Domain) => {
     if (isAuthenticated) {
       const data = queryClient.getQueryData<any>(["cart"]);
-      // Format the data before sending it to the server
       const formattedData = domain.price?.map((price) => ({
         product: "domain",
         productId: price._id,
@@ -129,16 +128,17 @@ const Hero = () => {
       mutate(formattedData);
     } else {
       setCart((prevCart) => {
+        // Merge cart items and ensure they still match the Domain type
         const newCart = [
           ...prevCart,
           ...domain.price?.map((price) => ({
-            product: "domain",
+            ...domain, // Spread the original domain object to keep its structure
             productId: price._id,
-            domainName: domain.name,
-            type: "new", // Assuming the type is "new", adjust if necessary
             year: price.year,
           })) || [],
         ];
+  
+        // Save the updated cart to localStorage
         localStorage.setItem("cart", JSON.stringify(newCart));
         console.log("Cart updated with new items:", newCart);
         return newCart;
@@ -153,13 +153,16 @@ const Hero = () => {
     }
   };
   
+  
   const handleRemoveFromCart = (domain: Domain) => {
     setCart((prevCart) => {
-      const newCart = prevCart.filter((item) => item.domainName !== domain.name);
+      // Use 'name' instead of 'domainName' since 'name' is a property of the 'Domain' type
+      const newCart = prevCart.filter((item) => item.name !== domain.name);
       localStorage.setItem("cart", JSON.stringify(newCart));
       console.log("Cart updated by removing item:", newCart);
       return newCart;
     });
+    
     queryClient.setQueryData<Domain[]>(
       ["domainAvailability", searchQuery],
       (oldDomains = []) =>
