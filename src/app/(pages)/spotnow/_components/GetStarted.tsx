@@ -10,9 +10,11 @@ interface StepProps{
 // Reusable Step component
 const Step:React.FC<StepProps> = ({ title, description }) => (
   <div className='flex flex-col gap-4 w-[320px]'>
+    <div className='flex max-md:justify-center'>
     <Image src={IMAGES.Checkcircle} alt='tick' />
-    <span className='font-900 font-roboto text-home-heading text-3xl'>{title}</span>
-    <span className='font-400 font-roboto-serif text-home-heading text-2xl tracking-tight'>{description}</span>
+    </div>
+    <span className='font-900 font-roboto text-home-heading text-3xl max-md:text-2xl'>{title}</span>
+    <span className='font-400 font-roboto-serif text-home-heading text-2xl  max-md:text-xl tracking-tight'>{description}</span>
   </div>
 );
 
@@ -38,9 +40,9 @@ const GetStarted = () => {
   ];
 
   return (
-    <div className='py-20 bg-background-SpotNow-gettingStarted'>
+    <div className='py-20 max-md:py-10 bg-background-SpotNow-gettingStarted max-md:text-center'>
       <div className='flex justify-center'>
-        <span className='text-6xl max-xl:text-4xl max-lg:text-2xl font-900 text-home-heading font-roboto text-center'>Get Started with SpotNow in Minutes</span>
+        <span className='text-6xl max-xl:text-4xl max-lg:text-2xl max-md:text-3xl font-900 text-home-heading font-roboto text-center'>Get Started with SpotNow in Minutes</span>
       </div>
       <div className='flex justify-center pt-8'>
         <span className='text-center font-400 font-roboto-serif text-3xl max-md:text-xl w-[40vw] max-xl:w-full'>Increased efficiency, better management, and much more in no time! Just follow these four steps.</span>

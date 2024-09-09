@@ -25,6 +25,8 @@ interface Domain {
   }[];
 }
 
+
+
 const words = [".education", ".travel", ".fun", ".online"];
 
 const fetchDomainAvailability = async (domain: string) => {
@@ -116,12 +118,29 @@ const Hero = () => {
   const handleAddToCart = (domain: Domain) => {
     if (isAuthenticated) {
       const data = queryClient.getQueryData<any>(["cart"]);
-      mutate(data);
+      // Format the data before sending it to the server
+      const formattedData = domain.price?.map((price) => ({
+        product: "domain",
+        productId: price._id,
+        domainName: domain.name,
+        type: "new", // Assuming the type is "new", adjust if necessary
+        year: price.year,
+      }));
+      mutate(formattedData);
     } else {
       setCart((prevCart) => {
-        const newCart = [...prevCart, domain];
+        const newCart = [
+          ...prevCart,
+          ...domain.price?.map((price) => ({
+            product: "domain",
+            productId: price._id,
+            domainName: domain.name,
+            type: "new", // Assuming the type is "new", adjust if necessary
+            year: price.year,
+          })) || [],
+        ];
         localStorage.setItem("cart", JSON.stringify(newCart));
-        console.log("Cart updated with new item:", newCart);
+        console.log("Cart updated with new items:", newCart);
         return newCart;
       });
       queryClient.setQueryData<Domain[]>(
@@ -133,10 +152,10 @@ const Hero = () => {
       );
     }
   };
-
+  
   const handleRemoveFromCart = (domain: Domain) => {
     setCart((prevCart) => {
-      const newCart = prevCart.filter((item) => item.name !== domain.name);
+      const newCart = prevCart.filter((item) => item.domainName !== domain.name);
       localStorage.setItem("cart", JSON.stringify(newCart));
       console.log("Cart updated by removing item:", newCart);
       return newCart;
@@ -149,6 +168,7 @@ const Hero = () => {
         )
     );
   };
+  
 
   const getTextColor = (word: string) => {
     switch (word) {

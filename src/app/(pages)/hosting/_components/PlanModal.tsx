@@ -3,7 +3,7 @@ import { IMAGES } from '@/assets';
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import {  toast } from 'sonner';
+import { toast } from 'sonner';
 
 
 interface Domain {
@@ -50,8 +50,8 @@ const PlanModal: React.FC<PlanModalProps> = ({
     index
 }) => {
     const [selectedPeriod, setSelectedPeriod] = useState('monthly');
-    const [price, setPrice] = useState<number>(0);
-    const [selectedDomains, setSelectedDomains] = useState<Domain[]>([]);
+    const [price, setPrice] = useState < number > (0);
+    const [selectedDomains, setSelectedDomains] = useState < Domain[] > ([]);
 
     const { data, isError, isLoading } = useQuery({ queryKey: ["plans"], queryFn: fetchPlans });
 
@@ -74,45 +74,45 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
     const toggleDomainSelection = (domain: Domain) => {
         setSelectedDomains(prevSelected => {
-          const isSelected = prevSelected.some(d => d.name === domain.name);
-          if (isSelected) {
-            toast.success(`${domain.name} removed from cart`);
-            return prevSelected.filter(d => d.name !== domain.name);
-          } else {
-            toast.success(`${domain.name} added to cart`);
-            return [...prevSelected, domain];
-          }
+            const isSelected = prevSelected.some(d => d.name === domain.name);
+            if (isSelected) {
+                toast.success(`${domain.name} removed from cart`);
+                return prevSelected.filter(d => d.name !== domain.name);
+            } else {
+                toast.success(`${domain.name} added to cart`);
+                return [...prevSelected, domain];
+            }
         });
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         if (data) {
             const currentProduct = data.product[index]._id;
             // Retrieve the current cart from localStorage
             const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-            
+
             // Remove existing entries for the current product
             const filteredCart = existingCart.filter((item: any) => item.productId !== currentProduct);
-    
+
             // Create new entries for selected domains
             const newCartItems = selectedDomains.map(domain => ({
-                product: "Hosting",
+                product: "hosting",
                 productId: currentProduct,
                 domainName: domain.name,
                 period: selectedPeriod,
-                price:price
+                type: "new"
             }));
-    
+
             // Combine the filtered existing cart with new items
             const updatedCart = [...filteredCart, ...newCartItems];
-    
+
             // Store the updated cart back into localStorage
             localStorage.setItem('cart', JSON.stringify(updatedCart));
         }
     }, [selectedDomains, selectedPeriod, data, index]);
 
     const DomainItem = ({ domain }: { domain: Domain }) => (
-        <div className="flex justify-between w-[85vw] bg-white items-center content-center m-3 max-md:m-1">
+        <div className="flex justify-between w-[70vw] max-xl:w-[80vw] bg-white items-center content-center m-3 max-md:m-1">
             <div className="flex flex-col mx-4  max-md:mx-1 p-3 max-md:p-1">
                 <span className="font-900 text-lg max-lg:text-md max-md:text-xs">{domain.name}</span>
                 <div>
@@ -177,7 +177,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
-            <div className="relative w-[80vw] max-xl:w-[90vw] max-md:w-[95vw] rounded-lg border border-black shadow-lg mb-8">
+            <div className="relative w-[80vw] max-xl:w-[95vw] max-md:w-[95vw] rounded-lg border border-black shadow-lg mb-8">
                 <Image
                     src={IMAGES.HostBanner}
                     alt="home banner"
@@ -227,15 +227,15 @@ const PlanModal: React.FC<PlanModalProps> = ({
                     )}
                     {currentStep === 1 && (
                         <div className='flex flex-col items-start px-10 max-md:px-1'>
-                            <div className='flex items-center  max-md:justify-center max-md:items-start gap-16 max-md:gap-0  mx-3 max-md:mx-0 '>
-                                <div className='flex items-center gap-4 max-md:gap-1'>
+                            <div className='flex items-center  max-md:justify-center max-md:items-start gap-16 max-md:gap-10 max-md:p-2  mx-3 max-md:mx-2 '>
+                                <div className='flex items-center gap-4 max-md:gap-3'>
                                     <input
                                         type="radio"
                                         name="domainOption"
                                         id="newDomain"
                                         onChange={() => setShowInputForm(true)}
                                     />
-                                    <span className=' font-roboto-serif text-3xl max-md:text-xs '>
+                                    <span className=' font-roboto-serif text-3xl max-lg:text-lg max-md:text-xs'>
                                         Register a New Domain
                                     </span>
                                 </div>
@@ -246,7 +246,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                         id="existingDomain"
                                         onChange={() => setShowInputForm(false)}
                                     />
-                                    <span className=' font-roboto-serif text-3xl max-md:text-xs '>
+                                    <span className=' font-roboto-serif text-3xl max-lg:text-lg max-md:text-xs '>
                                         I already have a Domain Name
                                     </span>
                                 </div>
@@ -254,24 +254,24 @@ const PlanModal: React.FC<PlanModalProps> = ({
                             <div className="flex  pb-6 max-md:pb-0">
                                 {showInputForm ? (
                                     <div>
-                                        <div className="flex m-3  max-md:m-0 max-md:mt-3 rounded-xl ">
+                                        <div className="flex m-3  max-md:m-3 max-md:mt-3 rounded-xl ">
                                             <input
-                                                className="w-[60vw] max-md:w-[55vw] p-6 max-md:p-2 border rounded-l-xl max-md:text-xs max-md:placeholder:text-[10px]"
+                                                className="w-[60vw] max-md:w-[55vw] p-6 max-md:p-3 border rounded-l-xl max-md:text-xs max-md:placeholder:text-[10px]"
                                                 placeholder="Find and purchase a domain name"
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 autoFocus
                                             />
                                             <button
-                                                className={`bg-home-primary text-white w-[30vw] text-xl max-md:text-md max-md:px-0 font-roboto font-700 px-6 p-2 rounded-r-xl ${isFetching ? "cursor-wait" : ""
+                                                className={`bg-home-primary text-white max-md:w-[30vw] text-xl max-md:text-md max-md:px-0 font-roboto font-700 px-6 p-2 rounded-r-xl ${isFetching ? "cursor-wait" : ""
                                                     }`}
-                                                    onClick={async () => {
-                                                        await refetch();
-                                                        setIsModalOpen(true);
-                                                    }}disabled={isFetching}
+                                                onClick={async () => {
+                                                    await refetch();
+                                                    setIsModalOpen(true);
+                                                }} disabled={isFetching}
                                             >
                                                 <span className=' max-md:text-[10px] '>
-                                                {isFetching ? "Searching..." : "Check Availability "}
+                                                    {isFetching ? "Searching..." : "Check Availability "}
                                                 </span>
                                             </button>
                                         </div>
@@ -286,7 +286,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                 ) : (
                                     <div className="flex m-3 rounded-xl">
                                         <input
-                                            className="w-[60vw] max-md:w-[70vw] p-6 max-md:p-2 border rounded-l-xl max-md:placeholder:text-[10px]"
+                                            className="w-[60vw] max-md:w-[50vw] p-6 max-md:p-2 border rounded-l-xl max-md:placeholder:text-[10px]"
                                             placeholder="Enter your domain name"
                                         />
                                         <button

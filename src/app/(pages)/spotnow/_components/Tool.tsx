@@ -13,7 +13,7 @@ interface StepProps {
 const Step: React.FC<StepProps> = ({ image, title, description }) => (
     <div className='flex flex-col gap-4 w-[27vw] max-xl:w-[350px] max-md:w-[300px]'>
         <Image src={image} alt='tick' className='' />
-        <span className='font-900 font-roboto text-home-heading text-3xl max-md:text-xl pr-16'>{title}</span>
+        <span className='font-900 font-roboto text-home-heading text-3xl max-md:text-xl pr-16 max-md:pr-0'>{title}</span>
         <span className='font-400 font-roboto-serif text-home-heading text-2xl max-md:text-lg tracking-tight'>{description}</span>
     </div>
 );
@@ -26,14 +26,14 @@ const Tool = () => {
     ];
 
     return (
-        <div className='py-40 bg-[#EEFDF6]'>
+        <div className='py-40 max-md:py-10 bg-[#EEFDF6] max-md:text-center'>
             <div className='flex justify-center'>
                 <span className='text-6xl max-2xl:text-4xl max-xl:text-3xl max-md:tracking-tight font-900 text-home-heading font-roboto text-center'>Get Started with SpotNow in Minutes</span>
             </div>
             <div className='flex justify-center pt-8'>
                 <span className='text-center font-400 font-roboto-serif text-3xl max-xl:text-xl w-[40vw] max-lg:w-full'>Increased efficiency, better management, and much more in no time! Just follow these three steps.</span>
             </div>
-            <div className='flex justify-center flex-wrap py-20 gap-10'>
+            <div className='flex justify-center flex-wrap py-20 max-md:py-10 gap-10 max-md:gap-20'>
                 {steps.map((step, index) => (
                     <Step
                         key={index}

@@ -60,8 +60,10 @@ const PlanModal: React.FC<PlanModalProps> = ({
     index
 }) => {
     const [selectedPeriod, setSelectedPeriod] = useState('Annual-Monthly');
-    const [price, setPrice] = useState<number>(0);
-    const [selectedDomains, setSelectedDomains] = useState<Domain[]>([]);
+    const [price, setPrice] = useState < number > (0);
+    const [selectedDomains, setSelectedDomains] = useState < Domain[] > ([]);
+    const [quantity, setQuantity] = useState(1);
+
 
     const { data, isError, isLoading } = useQuery({ queryKey: ["Gsuite"], queryFn: GsuitePlans });
 
@@ -105,7 +107,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
         setSelectedDomains(prevSelected => {
             const isSelected = prevSelected.some(d => d.name === domain.name);
             let updatedSelectedDomains;
-
+    
             if (isSelected) {
                 toast.success(`${domain.name} removed from cart`);
                 updatedSelectedDomains = prevSelected.filter(d => d.name !== domain.name);
@@ -113,36 +115,31 @@ const PlanModal: React.FC<PlanModalProps> = ({
                 toast.success(`${domain.name} added to cart`);
                 updatedSelectedDomains = [...prevSelected, domain];
             }
-
-            // Update the cart in localStorage
+    
             if (data) {
                 const currentProduct = data.products[index]._id;
-
-                // Retrieve the existing cart from localStorage
+    
                 const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-                // Remove existing entries for the current product
                 const filteredCart = existingCart.filter((item: any) => item.productId !== currentProduct);
-
-                // Create new entries for selected domains
+    
                 const newCartItems = updatedSelectedDomains.map(domain => ({
-                    product: "Gsuite",
+                    product: "gsuite",
                     productId: currentProduct,
                     domainName: domain.name,
                     period: selectedPeriod,
-                    price: price // Add the price here
+                    type: "new",
+                    quantity // Include the selected quantity here
                 }));
-
-                // Combine the filtered existing cart with new items
+    
                 const updatedCart = [...filteredCart, ...newCartItems];
-
-                // Store the updated cart back into localStorage
+    
                 localStorage.setItem('cart', JSON.stringify(updatedCart));
             }
-
+    
             return updatedSelectedDomains;
         });
     };
+    
 
     const DomainItem = ({ domain }: { domain: Domain }) => (
         <div className="flex justify-between bg-white items-center content-center m-3">
@@ -220,6 +217,20 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                     <span className='text-3xl max-xl:text-xl font-400 font-roboto-serif'>{currentProduct.name}</span>
                                 </div>
                                 <div className='flex max-md:flex-col items-center justify-center max-md:pt-4 max-md:gap-4 gap-10'>
+                                    <div className='flex flex-col gap-2'>
+                                        <span className='font-roboto font-900 text-4xl max-md:text-xl text-home-heading'>Quantity</span>
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            id="quantity"
+                                            className='p-3 rounded-xl'
+                                            min={1}
+                                            max={5000}
+                                            defaultValue={1}
+                                            onChange={(e) => setQuantity(Number(e.target.value))}
+                                        />
+
+                                    </div>
                                     <div className='flex flex-col gap-3'>
                                         <span className='text-4xl max-md:text-xl font-roboto font-900 text-home-heading'>Duration</span>
                                         <select
@@ -240,8 +251,9 @@ const PlanModal: React.FC<PlanModalProps> = ({
                                         <span className='font-roboto font-900 text-4xl max-md:text-xl text-home-heading'>Total</span>
                                         <span className='text-4xl font-400 max-md:text-xl font-roboto-serif'>₹{price}/-</span>
                                     </div>
+
                                     <button
-                                        className='bg-home-primary text-3xl max-md:text-xl font-900 text-white py-4 px-4 rounded-2xl'
+                                        className='bg-home-primary text-3xl max-md:text-xl max-xl:text-xl font-900 text-white py-4 px-4 rounded-2xl'
                                         onClick={handleNextStep}
                                     >
                                         Buy Now
